@@ -15,13 +15,16 @@ library(dplyr)
 
 # Step 0. Load the data in RStudio into a data frame
 df_purchases = read.csv("refine_original.csv")
+
+# Get a look at the content
 glimpse(df_purchases)
 
 # Step 1. Clean Up Brand Names. All caps seems like a better choice for potential reports
 # All Caps For Brand Names
 df_purchases <- mutate_each(df_purchases, funs(toupper), company)
+
 # Clean Up Spelling Errors within List
-# If first letter is desired letter, replaces the word with <replacement>.
+# If first letter is desired letter, replaces the word with <"replacement">.
 df_purchases$company <- gsub("^P.*$", "PHILIPS", df_purchases$company)
 df_purchases$company <- gsub("^A.*$", "AKZO", df_purchases$company)
 df_purchases$company <- gsub("^U.*$", "UNILEVER", df_purchases$company)
@@ -40,7 +43,6 @@ df_purchases <- mutate(df_purchases, product_category = "plug")
 
 # Loop through the data frame and place a correct value 
 for (i in 1:nrow(df_purchases)) {
-  print(df_purchases$product_code[i])
   if (df_purchases$product_code[[i]] == "q") {
     df_purchases$product_category[[i]] <- "Tablet"
   } 
